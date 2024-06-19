@@ -3,10 +3,8 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql2');
 const app = express();
 
-// Configuração do body-parser para obter dados de formulários HTML
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Configuração do banco de dados
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -19,12 +17,10 @@ const db = mysql.createConnection({
     console.log('Conectado ao banco de dados MySQL!');
   });
 
-    // Configuração da rota para exibir o formulário HTML
     app.get('/', (req, res) => {
         res.sendFile(__dirname + '/index.html');
     });
 
-    // Rota para processar o formulário de cadastro
     app.post('/cadastro', (req, res) => {
         const {usuario, email, telefone } = req.body;
         const sql = 'INSERT INTO cadastro (usuario, email, telefone) VALUES (?, ?, ?)';
@@ -34,7 +30,7 @@ const db = mysql.createConnection({
         });
     });
 
-    // Rota para exibir os dados da tabela
+   
     app.get('/lista', (req, res) => {
         const sql = 'SELECT * FROM cadastro';
         db.query(sql, (err, results) => {
@@ -133,7 +129,6 @@ const db = mysql.createConnection({
         });
     });
    
-    // Rota PUT para atualizar um cadastro específico
     app.post('/atualizar/:id', (req, res) => {
         const { id } = req.params;
         const { usuario, email, telefone } = req.body;
@@ -148,7 +143,6 @@ const db = mysql.createConnection({
         });
     });
 
-    // Rota DELETE para remover um cadastro específico
     app.delete('/deletar/:id', (req, res) => {
         const { id } = req.params;
         const sql = 'DELETE FROM cadastro WHERE id = ?';
@@ -162,7 +156,6 @@ const db = mysql.createConnection({
         });
     });
 
-    // Iniciar o servidor
     app.listen(3000, () => {
         console.log('Servidor rodando na porta 3000');
     });
